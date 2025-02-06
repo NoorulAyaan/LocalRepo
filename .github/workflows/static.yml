@@ -36,7 +36,7 @@ jobs:
 
   deploy:
     name: Deploy to GitHub Pages
-    needs: test  # Run only if the tests pass
+    needs: test 
     runs-on: ubuntu-latest
     environment:
       name: github-pages

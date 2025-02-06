@@ -1,0 +1,43 @@
+name: Test and Deploy to Pages
+
+on:
+  push:
+    branches: ["NoorulAyan-patch-1"]
+  pull_request:
+    branches: ["NoorulAyan-patch-1"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Run HTML & CSS Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          npm install -g htmlhint stylelint stylelint-config-standard
+
+      - name: Run HTML Linter
+        run: htmlhint "**/*.html"
+
+      - name: Run CSS Linter
+        run: stylelint "**/*.css"
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: test 
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: $
